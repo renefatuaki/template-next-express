@@ -1,0 +1,31 @@
+# Handle line endings automatically for files detected as text and ensure these files use LF.
+* text=auto eol=lf
+
+# Declare files that will always have CRLF line endings on checkout.
+*.sln text eol=crlf
+
+# Denote all files that are truly binary and should not be modified.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.min.js binary
+*.min.css binary
+*.pdf binary
+
+# Diff handling for known file types
+*.json diff=json
+*.md diff=markdown
+*.css diff=css
+*.html diff=html
+*.js diff=javascript
+*.jsx diff=javascript
+*.ts diff=typescript
+*.tsx diff=typescript
+
+# Use custom diff for .env files (to prevent accidental exposure of secrets in diffs)
+*.env diff=none
+
+# Ignore generated files in diffs (e.g., Next.js build output)
+.next/ linguist-generated=true

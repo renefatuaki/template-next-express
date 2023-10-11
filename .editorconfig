@@ -1,0 +1,27 @@
+# https://editorconfig.org
+
+root = true
+
+# Default settings for all files
+[*]
+charset = utf-8
+end_of_line = lf
+indent_size = 2
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# JavaScript, JSX, and TypeScript files
+[*.{js,jsx,ts,tsx}]
+indent_style = space
+indent_size = 2
+
+# JSON and YAML files
+[*.{json,yml,yaml}]
+indent_style = space
+indent_size = 2
+
+# CSS and SCSS files
+[*.{css,scss}]
+indent_style = space
+indent_size = 2
