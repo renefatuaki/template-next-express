@@ -8,8 +8,6 @@
 
 ## Getting Started
 
-### Setting up the environment
-
 **Install the required dependencies:**
 
 [Use the correct node version by using nvm](https://github.com/nvm-sh/nvm#nvmrc)
@@ -23,6 +21,10 @@
 To run both the frontend and backend, navigate to the root directory and run:
 
 <code>npm run dev</code>
+
+**Starting Debugger**
+
+<code>npm run debug</code>
 
 ## Code Formatting and Linting
 
