@@ -1,8 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "dev": "nodemon --config nodemon.json",
-    "debug": "nodemon --inspect -r ts-node/register server/server.ts",
+    "dev": "nodemon --quiet --config nodemon.json",
+    "debug": "node --inspect -r ts-node/register server/server.ts",
     "build": "next build client && tsc --project tsconfig.server.json",
     "start": "cross-env NODE_ENV=production node dist/server.js",
     "compiler": "tsc --project server/tsconfig.server.json",
