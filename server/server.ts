@@ -1,47 +1,58 @@
-const express = require('express');
-const next = require('next');
+import express from 'express';
+import next from 'next';
 
-const port = parseInt(process.env.PORT || '3000', 10);
-const dev = process.env.NODE_ENV !== 'production';
+import { configureMiddleware } from './config/middlewareConfig';
+import { handleErrors } from './middleware/errorHandler';
+import appRoutes from './routes/appRoutes';
+
+const port: number = parseInt(process.env.PORT || '3000', 10);
+const dev: boolean = process.env.NODE_ENV !== 'production';
 const app = next({ dev, dir: './client' });
 const handle = app.getRequestHandler();
-const bodyParser = require('body-parser');
-
-// const appRoutes = require('./routes/appRoutes');
 
 app.prepare().then(() => {
   const server = express();
 
-  server.use(bodyParser.urlencoded({ extended: false }));
+  configureMiddleware(server);
 
   // API route handled by Express
-  server.get('/', (req, res) => {
-    res.json({ message: 'Hello from Express!' });
-  });
+  server.use(express.json()); // JSON body parsing middleware
+  server.use(express.urlencoded({ extended: true })); // Form data parsing middleware
 
-  // server.use(appRoutes);
+  server.use(appRoutes);
 
-  // All other routes go to Next.js
+  // all other routes go to Next.js
   server.get('*', (req, res) => {
     return handle(req, res);
   });
 
-  server.listen(3000, (err) => {
-    if (err) throw err;
-    console.log(`> Server listening at http://localhost:${port} as ${dev ? 'development' : process.env.NODE_ENV}`);
-  });
+  // Error handling should be the last piece of middleware added to the app
+  server.use(handleErrors);
+
+  if (dev) {
+    const httpServer = server.listen(port, () => {
+      console.log(`🔌 Server listening at http://localhost:${port} as ${dev ? 'development' : process.env.NODE_ENV}`);
+    });
+
+    httpServer.on('error', (error: any) => {
+      if (error.syscall !== 'listen') {
+        throw error;
+      }
+
+      switch (error.code) {
+        case 'EACCES':
+          console.error(`🚨 Port ${port} requires elevated privileges`);
+          process.exit(1);
+          break;
+        case 'EADDRINUSE':
+          console.error(`🚨 Port ${port} is already in use`);
+          process.exit(1);
+          break;
+        default:
+          throw error;
+      }
+    });
+  } else {
+    // TODO: production code
+  }
 });
-
-// import { Request, Response, NextFunction } from 'express';
-
-// server.get('/api/hello', (req: Request, res: Response) => {
-//     // your code here
-// });
-
-// server.get('*', (req: Request, res: Response) => {
-//     // your code here
-// });
-
-// server.listen(3000, (err?: any) => {
-//     // your code here
-// });
