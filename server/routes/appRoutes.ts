@@ -1,9 +1,9 @@
-'use strict';
+import express from 'express';
 
 const router = express.Router();
 
 router.get('/app', (req, res) => {
-  res.json({ message: 'Hello from express.js' });
+  res.json({ message: 'Hello from app route.' });
 });
 
-module.exports = router;
+export default router;
